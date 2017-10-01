@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Learner</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="pref_learn_type">
+        <item>Content</item>
+        <item>Title</item>
+    </string-array>
+    <integer-array name="pref_learn_type_values">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+    <string name="pref_file_prefix">learner_</string>
+    <string name="pref_mimeType">text/html</string>
+    <string name="pref_encoding">UTF-8</string>
+</resources>

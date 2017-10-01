@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Writer">
+        <EditTextPreference
+            android:defaultValue="@string/pref_file_prefix"
+            android:key="default_prefix"
+            android:summary="Set prefix of the saved files"
+            android:title="Prefix of the files" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_encoding"
+            android:key="save_encoding"
+            android:summary="Set encoding of the saved files"
+            android:title="Encoding of the files" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Reader">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_learn_content"
+            android:summary="Learn information from content-field"
+            android:title="Learn content" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_encoding"
+            android:key="read_encoding"
+            android:summary="Set encoding of the saved files"
+            android:title="Encoding of the files" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_mimeType"
+            android:key="mimeType"
+            android:summary="Set mine type for browser"
+            android:title="MimeType of the page" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_encoding"
+            android:key="encoding"
+            android:summary="Set encoding for browser"
+            android:title="Encoding of the page" />
+    </PreferenceCategory>
+</PreferenceScreen>
