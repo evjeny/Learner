@@ -17,6 +17,7 @@ import android.widget.EditText;
 public class CodeActivity extends AppCompatActivity {
     private EditText code;
     private String output = "", debug = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

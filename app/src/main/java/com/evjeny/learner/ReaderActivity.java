@@ -33,6 +33,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
 /**
  * Created by Evjeny on 04.07.2017 21:35.
  */
@@ -80,13 +81,13 @@ public class ReaderActivity extends AppCompatActivity {
         card.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeLeft() {
-                if(isMem) rem();
+                if (isMem) rem();
                 else wrong();
             }
 
             @Override
             public void onSwipeRight() {
-                if(isMem) rem();
+                if (isMem) rem();
                 else right();
             }
         });
@@ -138,7 +139,7 @@ public class ReaderActivity extends AppCompatActivity {
                 dialog.show();
                 break;
             case R.id.menu_reader_count:
-                Toast.makeText(ReaderActivity.this, "All: "+items.size() +
+                Toast.makeText(ReaderActivity.this, "All: " + items.size() +
                         "\nLeft: " + temp.size(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_reader_clear:
@@ -175,6 +176,7 @@ public class ReaderActivity extends AppCompatActivity {
     public void right(View v) {
         right();
     }
+
     public void wrong(View v) {
         wrong();
     }
@@ -182,8 +184,8 @@ public class ReaderActivity extends AppCompatActivity {
     private void rem() {
         memory.setVisibility(View.GONE);
         truthfulness.setVisibility(View.VISIBLE);
-        if(currentItem!=null) {
-            if(mode==0) {
+        if (currentItem != null) {
+            if (mode == 0) {
                 content.setVisibility(View.VISIBLE);
                 content.setText(currentItem.getContent());
                 if (!currentItem.getHtml().equals("")) {
@@ -198,20 +200,22 @@ public class ReaderActivity extends AppCompatActivity {
             isMem = false;
         }
     }
+
     private void right() {
         temp.remove(currentItem);
         initRandomWord(temp);
         isMem = true;
     }
+
     private void wrong() {
         initRandomWord(temp);
         isMem = true;
     }
 
     private void initRandomWord(ArrayList<LearnItem> todo) {
-        if(todo.size()!=0) {
+        if (todo.size() != 0) {
             currentItem = todo.get(random.nextInt(todo.size()));
-            if(mode==0) {
+            if (mode == 0) {
                 title.setText(currentItem.getName());
                 content.setVisibility(View.GONE);
                 webView.setVisibility(View.GONE);
@@ -253,15 +257,28 @@ public class ReaderActivity extends AppCompatActivity {
         switch (requestCode) {
             case FilePickerDialog.EXTERNAL_READ_PERMISSION_GRANT: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(dialog!=null)
-                    {
+                    if (dialog != null) {
                         dialog.show();
                     }
-                }
-                else {
-                    Toast.makeText(ReaderActivity.this,"Permission is Required for getting list of files",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ReaderActivity.this, "Permission is Required for getting list of files", Toast.LENGTH_SHORT).show();
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit");
+        builder.setMessage("Exit from Reader?");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ReaderActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
     }
 }

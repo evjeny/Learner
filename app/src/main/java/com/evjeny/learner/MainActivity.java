@@ -1,7 +1,9 @@
 package com.evjeny.learner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Intent writer = new Intent(this, WriterActivity.class);
         startActivity(writer);
     }
+
     public void reader(View view) {
         Intent reader = new Intent(this, ReaderActivity.class);
         startActivity(reader);
@@ -26,6 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit");
+        builder.setMessage("Exit from app?");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
     }
 
     @Override

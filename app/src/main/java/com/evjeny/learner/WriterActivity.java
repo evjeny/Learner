@@ -1,5 +1,6 @@
 package com.evjeny.learner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -53,7 +54,7 @@ import java.util.List;
  */
 
 public class WriterActivity extends AppCompatActivity implements
-        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener{
+        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private LinearLayout root;
     private EditText title;
     private ListView listView;
@@ -72,6 +73,7 @@ public class WriterActivity extends AppCompatActivity implements
     private String code = "";
     private String coder_debug = "";
     private String coder_output = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +102,7 @@ public class WriterActivity extends AppCompatActivity implements
 
     public void add(View view) {
         String title_text;
-        if(!(title_text=title.getText().toString()).equals("")) {
+        if (!(title_text = title.getText().toString()).equals("")) {
             LearnItem lt = new LearnItem(title_text);
             items.add(lt);
             title.setText("");
@@ -126,7 +128,7 @@ public class WriterActivity extends AppCompatActivity implements
             String title_str = title.getText().toString();
             String content_str = content.getText().toString();
             String html_str = html.getText().toString();
-            if(!title_str.equals("")) {
+            if (!title_str.equals("")) {
                 LearnItem current = items.get(position);
                 current.setName(title_str);
                 current.setContent(content_str);
@@ -207,11 +209,11 @@ public class WriterActivity extends AppCompatActivity implements
                 dialog.setDialogSelectionListener(files -> {
                     String filename = sp.getString("default_prefix",
                             getString(R.string.pref_file_prefix)) +
-                            getCurrentDate("dd.MM.yy_HH.mm.ss")+".json";
+                            getCurrentDate("dd.MM.yy_HH.mm.ss") + ".json";
                     File output = new File(new File(files[0]), filename);
                     try {
                         fileUtils.saveFile(output, jsonio.getJson(items), save_encoding);
-                        Toast.makeText(WriterActivity.this, "File \""+filename+"\n saved to SD!",
+                        Toast.makeText(WriterActivity.this, "File \"" + filename + "\n saved to SD!",
                                 Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -220,7 +222,7 @@ public class WriterActivity extends AppCompatActivity implements
                 dialog.show();
                 break;
             case R.id.menu_writer_count:
-                Toast.makeText(WriterActivity.this, "All: "+items.size(), Toast.LENGTH_LONG).show();
+                Toast.makeText(WriterActivity.this, "All: " + items.size(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_writer_clear:
                 final AlertDialog.Builder builder = new AlertDialog.Builder(WriterActivity.this);
@@ -239,29 +241,30 @@ public class WriterActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
     private String getCurrentDate(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date(System.currentTimeMillis()));
     }
+
     private void addItems(ArrayList<LearnItem> _items) {
-        for(LearnItem item: _items) {
+        for (LearnItem item : _items) {
             items.add(item);
         }
         adapter.notifyDataSetChanged();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case FilePickerDialog.EXTERNAL_READ_PERMISSION_GRANT: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(dialog!=null)
-                    {
+                    if (dialog != null) {
                         dialog.show();
                     }
-                }
-                else {
+                } else {
                     //Permission has not been granted. Notify the user.
-                    Toast.makeText(WriterActivity.this,"Permission is Required for getting list of files",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WriterActivity.this, "Permission is Required for getting list of files", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -274,37 +277,37 @@ public class WriterActivity extends AppCompatActivity implements
             String itemText = "";
             String content = "";
             String html = "";
-            if(length>=1) itemText = args[0].asString();
-            if(length>=2) content = args[1].asString();
-            if(length==3) html = args[2].asString();
+            if (length >= 1) itemText = args[0].asString();
+            if (length >= 2) content = args[1].asString();
+            if (length == 3) html = args[2].asString();
             items.add(new LearnItem(itemText, content, html));
             adapter.notifyDataSetChanged();
             return null;
         });
         Functions.set("addItemWithIndex", args -> {
             final int length = args.length;
-            if(length>4 || length <1) throw new RuntimeException("Arguments are incorrect!");
+            if (length > 4 || length < 1) throw new RuntimeException("Arguments are incorrect!");
             int index = args[0].asInt();
             String itemText = "";
             String content = "";
             String html = "";
-            if(length>=2) itemText = args[1].asString();
-            if(length>=3) content = args[2].asString();
-            if(length==4) html = args[3].asString();
+            if (length >= 2) itemText = args[1].asString();
+            if (length >= 3) content = args[2].asString();
+            if (length == 4) html = args[3].asString();
             items.add(index, new LearnItem(itemText, content, html));
             adapter.notifyDataSetChanged();
             return null;
         });
         Functions.set("setItem", args -> {
             final int length = args.length;
-            if(length>4 || length==0) throw new RuntimeException("Arguments are incorrect!");
+            if (length > 4 || length == 0) throw new RuntimeException("Arguments are incorrect!");
             int index = args[0].asInt();
             String itemText = "";
             String content = "";
             String html = "";
-            if(length>=2) itemText = args[1].asString();
-            if(length>=3) content = args[2].asString();
-            if(length==4) html = args[3].asString();
+            if (length >= 2) itemText = args[1].asString();
+            if (length >= 3) content = args[2].asString();
+            if (length == 4) html = args[3].asString();
             items.remove(index);
             items.add(index, new LearnItem(itemText, content, html));
             adapter.notifyDataSetChanged();
@@ -312,7 +315,7 @@ public class WriterActivity extends AppCompatActivity implements
         });
         Functions.set("setItemText", args -> {
             final int length = args.length;
-            if(length!=2) throw new RuntimeException("Arguments are incorrect!");
+            if (length != 2) throw new RuntimeException("Arguments are incorrect!");
             int index = args[0].asInt();
             String itemText = args[1].asString();
             items.get(index).setName(itemText);
@@ -321,7 +324,7 @@ public class WriterActivity extends AppCompatActivity implements
         });
         Functions.set("setItemContent", args -> {
             final int length = args.length;
-            if(length!=2) throw new RuntimeException("Arguments are incorrect!");
+            if (length != 2) throw new RuntimeException("Arguments are incorrect!");
             int index = args[0].asInt();
             String itemContent = args[1].asString();
             items.get(index).setContent(itemContent);
@@ -330,7 +333,7 @@ public class WriterActivity extends AppCompatActivity implements
         });
         Functions.set("setItemHtml", args -> {
             final int length = args.length;
-            if(length!=2) throw new RuntimeException("Arguments are incorrect!");
+            if (length != 2) throw new RuntimeException("Arguments are incorrect!");
             int index = args[0].asInt();
             String itemHtml = args[1].asString();
             items.get(index).setHtml(itemHtml);
@@ -338,46 +341,46 @@ public class WriterActivity extends AppCompatActivity implements
             return null;
         });
         Functions.set("length", args -> {
-            if(args.length!=0)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 0) throw new RuntimeException("Arguments are incorrect!");
             return new IntValue(items.size());
         });
         Functions.set("getItemText", args -> {
-            if(args.length!=1)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 1) throw new RuntimeException("Arguments are incorrect!");
             return new StringValue(items.get(args[0].asInt()).getName());
         });
         Functions.set("getItemContent", args -> {
-            if(args.length!=1)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 1) throw new RuntimeException("Arguments are incorrect!");
             return new StringValue(items.get(args[0].asInt()).getContent());
         });
         Functions.set("getItemHtml", args -> {
-            if(args.length!=1)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 1) throw new RuntimeException("Arguments are incorrect!");
             return new StringValue(items.get(args[0].asInt()).getHtml());
         });
         Functions.set("getAllTexts", args -> {
-            if(args.length!=0)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 0) throw new RuntimeException("Arguments are incorrect!");
             int size = items.size();
             StringValue[] values = new StringValue[size];
-            for(int i = 0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 LearnItem curr = items.get(i);
                 values[i] = new StringValue(curr.getName());
             }
             return new ArrayValue(values);
         });
         Functions.set("getAllContents", args -> {
-            if(args.length!=0)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 0) throw new RuntimeException("Arguments are incorrect!");
             int size = items.size();
             StringValue[] values = new StringValue[size];
-            for(int i = 0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 LearnItem curr = items.get(i);
                 values[i] = new StringValue(curr.getContent());
             }
             return new ArrayValue(values);
         });
         Functions.set("getAllHtmls", args -> {
-            if(args.length!=0)  throw new RuntimeException("Arguments are incorrect!");
+            if (args.length != 0) throw new RuntimeException("Arguments are incorrect!");
             int size = items.size();
             StringValue[] values = new StringValue[size];
-            for(int i = 0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 LearnItem curr = items.get(i);
                 values[i] = new StringValue(curr.getHtml());
             }
@@ -387,13 +390,13 @@ public class WriterActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CODER_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == CODER_REQUEST_CODE && resultCode == RESULT_OK) {
             code = data.getStringExtra("code");
             coder_debug = "[TOKENS]";
             coder_output = "";
             Lexer lexer = new Lexer(code);
             List<Token> tokens = lexer.tokenize();
-            for(Token t: tokens) {
+            for (Token t : tokens) {
                 coder_debug += t + "\n";
             }
             coder_debug += "[TOKENS]";
@@ -413,5 +416,20 @@ public class WriterActivity extends AppCompatActivity implements
             prog.accept(new FunctionAdder());
             prog.execute();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit");
+        builder.setMessage("Exit from Writer?");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                WriterActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
     }
 }
