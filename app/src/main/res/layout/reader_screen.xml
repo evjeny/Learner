@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="remember"
-                android:text="Forward" />
+                android:text="@string/forward" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,14 +66,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="wrong"
-                android:text="Wrong" />
+                android:text="@string/wrong" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="right"
-                android:text="Right" />
+                android:text="@string/right" />
         </LinearLayout>
 
     </LinearLayout>

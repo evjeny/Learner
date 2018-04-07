@@ -5,16 +5,21 @@
     <item
         android:id="@+id/menu_reader_import"
         android:icon="@drawable/ic_file_import"
-        android:title="Import"
+        android:title="@string/import_"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/menu_reader_switch"
+        android:icon="@drawable/ic_switch"
+        android:title="@string/switch_mode"
         app:showAsAction="withText" />
     <item
         android:id="@+id/menu_reader_count"
         android:icon="@drawable/ic_count"
-        android:title="Count items"
+        android:title="@string/count_items"
         app:showAsAction="withText" />
     <item
         android:id="@+id/menu_reader_clear"
         android:icon="@drawable/ic_clear"
-        android:title="Clear items"
+        android:title="@string/clear_items"
         app:showAsAction="withText" />
 </menu>

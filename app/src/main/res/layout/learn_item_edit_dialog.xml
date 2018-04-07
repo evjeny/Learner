@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title" />
+                android:text="@string/title" />
 
             <EditText
                 android:id="@+id/lit_ed_title"
@@ -28,13 +28,13 @@
                 android:layout_margin="20dp"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:ems="10"
-                android:hint="Title"
+                android:hint="@string/title"
                 android:inputType="text" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Content" />
+                android:text="@string/content" />
 
             <EditText
                 android:id="@+id/lit_ed_content"
@@ -43,13 +43,13 @@
                 android:layout_margin="20dp"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:ems="10"
-                android:hint="Content"
+                android:hint="@string/content"
                 android:inputType="text" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="HTML" />
+                android:text="@string/html" />
 
             <EditText
                 android:id="@+id/lit_ed_html"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:ems="10"
-                android:hint="HTML code"
+                android:hint="@string/html"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>

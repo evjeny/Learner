@@ -9,11 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="writer"
-        android:text="Writer" />
+        android:text="@string/writer" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="reader"
-        android:text="Reader" />
+        android:text="@string/reader" />
 </LinearLayout>

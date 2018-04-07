@@ -1,6 +1,6 @@
 package com.evjeny.learner;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -57,7 +57,6 @@ public class WriterActivity extends AppCompatActivity implements
         AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private LinearLayout root;
     private EditText title;
-    private ListView listView;
 
     private LayoutInflater inflater;
     private SharedPreferences sp;
@@ -81,7 +80,7 @@ public class WriterActivity extends AppCompatActivity implements
 
         root = (LinearLayout) findViewById(R.id.w_scr_root);
         title = (EditText) findViewById(R.id.w_scr_title);
-        listView = (ListView) findViewById(R.id.w_scr_lv_items);
+        ListView listView = (ListView) findViewById(R.id.w_scr_lv_items);
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -115,8 +114,8 @@ public class WriterActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(WriterActivity.this);
-        builder.setTitle("Edit item");
-        View ETDialog = inflater.inflate(R.layout.learn_item_edit_dialog, null);
+        builder.setTitle(R.string.edit_item);
+        @SuppressLint("InflateParams") View ETDialog = inflater.inflate(R.layout.learn_item_edit_dialog, null);
         final EditText title = (EditText) ETDialog.findViewById(R.id.lit_ed_title);
         title.setText(items.get(position).getName());
         final EditText content = (EditText) ETDialog.findViewById(R.id.lit_ed_content);
@@ -124,7 +123,7 @@ public class WriterActivity extends AppCompatActivity implements
         final EditText html = (EditText) ETDialog.findViewById(R.id.lit_ed_html);
         html.setText(items.get(position).getHtml());
         builder.setView(ETDialog);
-        builder.setPositiveButton("Ok", (dialog1, which) -> {
+        builder.setPositiveButton(R.string.ok, (dialog1, which) -> {
             String title_str = title.getText().toString();
             String content_str = content.getText().toString();
             String html_str = html.getText().toString();
@@ -136,17 +135,17 @@ public class WriterActivity extends AppCompatActivity implements
                 adapter.notifyDataSetChanged();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog12, which) -> {
+        builder.setNegativeButton(R.string.cancel, (dialog12, which) -> {
 
         });
-        builder.setNeutralButton("Delete", (dialog13, which) -> {
+        builder.setNeutralButton(R.string.delete, (dialog13, which) -> {
             final AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(WriterActivity.this);
-            deleteBuilder.setTitle("Delete");
-            deleteBuilder.setPositiveButton("Yes", (dialog1312, which12) -> {
+            deleteBuilder.setTitle(R.string.delete);
+            deleteBuilder.setPositiveButton(R.string.ok, (dialog1312, which12) -> {
                 items.remove(position);
                 adapter.notifyDataSetChanged();
             });
-            deleteBuilder.setNegativeButton("Cancel", (dialog131, which1) -> dialog131.dismiss());
+            deleteBuilder.setNegativeButton(R.string.cancel, (dialog131, which1) -> dialog131.dismiss());
             deleteBuilder.create().show();
         });
         builder.create().show();
@@ -188,7 +187,7 @@ public class WriterActivity extends AppCompatActivity implements
                 properties.error_dir = Environment.getExternalStorageDirectory();
                 properties.extensions = new String[]{"json"};
                 dialog = new FilePickerDialog(WriterActivity.this, properties);
-                dialog.setTitle("Choose files");
+                dialog.setTitle(R.string.choose_files);
                 dialog.setDialogSelectionListener(files -> {
                     try {
                         addItems(jsonio.getList(fileUtils.readFiles(fileUtils.files(files))));
@@ -205,15 +204,16 @@ public class WriterActivity extends AppCompatActivity implements
                 save_properties.root = new File(DialogConfigs.DEFAULT_DIR);
                 save_properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
                 dialog = new FilePickerDialog(WriterActivity.this, save_properties);
-                dialog.setTitle("Choose directory to save");
+                dialog.setTitle(getString(R.string.choose_dir));
                 dialog.setDialogSelectionListener(files -> {
                     String filename = sp.getString("default_prefix",
                             getString(R.string.pref_file_prefix)) +
-                            getCurrentDate("dd.MM.yy_HH.mm.ss") + ".json";
+                            getCurrentDate() + ".json";
                     File output = new File(new File(files[0]), filename);
                     try {
                         fileUtils.saveFile(output, jsonio.getJson(items), save_encoding);
-                        Toast.makeText(WriterActivity.this, "File \"" + filename + "\n saved to SD!",
+                        Toast.makeText(WriterActivity.this, getString(R.string.file) + "\""
+                                        + filename + "\"" + getString(R.string.saved_to_sd),
                                 Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -222,17 +222,18 @@ public class WriterActivity extends AppCompatActivity implements
                 dialog.show();
                 break;
             case R.id.menu_writer_count:
-                Toast.makeText(WriterActivity.this, "All: " + items.size(), Toast.LENGTH_LONG).show();
+                Toast.makeText(WriterActivity.this, getString(R.string.all) + ": " + items.size(),
+                        Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_writer_clear:
                 final AlertDialog.Builder builder = new AlertDialog.Builder(WriterActivity.this);
-                builder.setTitle("Clear");
-                builder.setMessage("Clear all items?");
-                builder.setPositiveButton("Yes", (dialog12, which) -> {
+                builder.setTitle(R.string.clear);
+                builder.setMessage(getString(R.string.clear_items) + "?");
+                builder.setPositiveButton(R.string.ok, (dialog12, which) -> {
                     items.clear();
                     adapter.notifyDataSetChanged();
                 });
-                builder.setNegativeButton("Cancel", (dialog1, which) -> dialog1.dismiss());
+                builder.setNegativeButton(R.string.cancel, (dialog1, which) -> dialog1.dismiss());
                 builder.create().show();
                 break;
             default:
@@ -242,15 +243,13 @@ public class WriterActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private String getCurrentDate(String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+    private String getCurrentDate() {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy_HH.mm.ss");
         return sdf.format(new Date(System.currentTimeMillis()));
     }
 
     private void addItems(ArrayList<LearnItem> _items) {
-        for (LearnItem item : _items) {
-            items.add(item);
-        }
+        items.addAll(_items);
         adapter.notifyDataSetChanged();
     }
 
@@ -263,8 +262,7 @@ public class WriterActivity extends AppCompatActivity implements
                         dialog.show();
                     }
                 } else {
-                    //Permission has not been granted. Notify the user.
-                    Toast.makeText(WriterActivity.this, "Permission is Required for getting list of files", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WriterActivity.this, R.string.permission_message, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -392,14 +390,18 @@ public class WriterActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODER_REQUEST_CODE && resultCode == RESULT_OK) {
             code = data.getStringExtra("code");
-            coder_debug = "[TOKENS]";
-            coder_output = "";
+
+            StringBuilder debug_builder = new StringBuilder();
+            debug_builder.append("[TOKENS]");
+            StringBuilder output_builder = new StringBuilder();
+
             Lexer lexer = new Lexer(code);
             List<Token> tokens = lexer.tokenize();
+
             for (Token t : tokens) {
-                coder_debug += t + "\n";
+                debug_builder.append(t).append("\n");
             }
-            coder_debug += "[TOKENS]";
+            debug_builder.append("[TOKENS]");
 
             Parser parser = new Parser(tokens, new IOInterface() {
                 @Override
@@ -409,27 +411,24 @@ public class WriterActivity extends AppCompatActivity implements
 
                 @Override
                 public void output(Object out) {
-                    coder_output += out;
+                    output_builder.append(out);
                 }
             });
-            final Statement prog = parser.parse();
-            prog.accept(new FunctionAdder());
-            prog.execute();
+            final Statement program = parser.parse();
+            program.accept(new FunctionAdder());
+            program.execute();
+            coder_debug = debug_builder.toString();
+            coder_output = output_builder.toString();
         }
     }
 
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit");
-        builder.setMessage("Exit from Writer?");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                WriterActivity.this.finish();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
+        builder.setTitle(R.string.exit);
+        builder.setMessage(R.string.exit_writer);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> WriterActivity.this.finish());
+        builder.setNegativeButton(R.string.cancel, null);
         builder.create().show();
     }
 }

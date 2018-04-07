@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Path to file"
+        android:hint="@string/path_to_file"
         android:inputType="textUri" />
 </LinearLayout>

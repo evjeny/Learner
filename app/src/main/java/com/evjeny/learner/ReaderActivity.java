@@ -1,6 +1,6 @@
 package com.evjeny.learner;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import com.evjeny.learner.models.FileUtils;
 import com.evjeny.learner.models.JSONIO;
 import com.evjeny.learner.models.LearnItem;
 import com.evjeny.learner.models.OnSwipeTouchListener;
-import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -41,9 +40,9 @@ import java.util.Random;
 public class ReaderActivity extends AppCompatActivity {
     private TextView title, content;
     private WebView webView;
-    private LinearLayout memory, truthfulness, card;
+    private LinearLayout memory;
+    private LinearLayout truthfulness;
 
-    private SharedPreferences sp;
     private JSONIO jsonio;
     private FileUtils fileUtils;
     private Random random;
@@ -58,6 +57,7 @@ public class ReaderActivity extends AppCompatActivity {
     private boolean isMem = true;
     private int mode = 0;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +67,9 @@ public class ReaderActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.r_scr_wv);
         memory = (LinearLayout) findViewById(R.id.r_scr_rm);
         truthfulness = (LinearLayout) findViewById(R.id.r_scr_tr);
-        card = (LinearLayout) findViewById(R.id.r_scr_viewer_card);
+        LinearLayout card = (LinearLayout) findViewById(R.id.r_scr_viewer_card);
 
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         jsonio = new JSONIO();
         fileUtils = new FileUtils();
         random = new Random();
@@ -120,49 +120,42 @@ public class ReaderActivity extends AppCompatActivity {
                 properties.error_dir = Environment.getExternalStorageDirectory();
                 properties.extensions = new String[]{"json"};
                 dialog = new FilePickerDialog(ReaderActivity.this, properties);
-                dialog.setTitle("Choose files");
-                dialog.setDialogSelectionListener(new DialogSelectionListener() {
-                    @Override
-                    public void onSelectedFilePaths(String[] files) {
-                        try {
-                            items.clear();
-                            items.addAll(jsonio.getList(fileUtils.readFiles(fileUtils.files(files),
-                                    encoding)));
-                            temp.clear();
-                            temp.addAll(items);
-                            initRandomWord(temp);
-                        } catch (IOException | ParseException e) {
-                            e.printStackTrace();
-                        }
+                dialog.setTitle(getString(R.string.choose_files));
+                dialog.setDialogSelectionListener(files -> {
+                    try {
+                        items.clear();
+                        items.addAll(jsonio.getList(fileUtils.readFiles(fileUtils.files(files),
+                                encoding)));
+                        temp.clear();
+                        temp.addAll(items);
+                        initRandomWord(temp);
+                    } catch (IOException | ParseException e) {
+                        e.printStackTrace();
                     }
                 });
                 dialog.show();
                 break;
+            case R.id.menu_reader_switch:
+                mode = mode ^ 1;
+                initRandomWord(temp);
+                break;
             case R.id.menu_reader_count:
-                Toast.makeText(ReaderActivity.this, "All: " + items.size() +
-                        "\nLeft: " + temp.size(), Toast.LENGTH_LONG).show();
+                Toast.makeText(ReaderActivity.this, getString(R.string.all) + ": " + items.size() +
+                        "\n" + getString(R.string.left) + ": " + temp.size(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_reader_clear:
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ReaderActivity.this);
-                builder.setTitle("Clear");
-                builder.setMessage("Clear all items?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        currentItem = null;
-                        temp.clear();
-                        items.clear();
-                        title.setText("");
-                        content.setText("");
-                        webView.setVisibility(View.INVISIBLE);
-                    }
+                builder.setTitle(R.string.clear);
+                builder.setMessage(getString(R.string.clear_items) + "?");
+                builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                    currentItem = null;
+                    temp.clear();
+                    items.clear();
+                    title.setText("");
+                    content.setText("");
+                    webView.setVisibility(View.INVISIBLE);
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
                 builder.create().show();
                 break;
         }
@@ -215,37 +208,36 @@ public class ReaderActivity extends AppCompatActivity {
     private void initRandomWord(ArrayList<LearnItem> todo) {
         if (todo.size() != 0) {
             currentItem = todo.get(random.nextInt(todo.size()));
+
             if (mode == 0) {
-                title.setText(currentItem.getName());
+                title.setVisibility(View.VISIBLE);
                 content.setVisibility(View.GONE);
                 webView.setVisibility(View.GONE);
             } else {
                 title.setVisibility(View.GONE);
                 content.setVisibility(View.VISIBLE);
-                content.setText(currentItem.getContent());
                 webView.setVisibility(View.VISIBLE);
-                if (!currentItem.getHtml().equals("")) {
-                    webView.loadDataWithBaseURL(null, currentItem.getHtml(),
-                            mimeType, page_encoding, null);
-                }
             }
+
+            title.setText(currentItem.getName());
+            content.setText(currentItem.getContent());
+            if (!currentItem.getHtml().equals("")) {
+                webView.loadDataWithBaseURL(null, currentItem.getHtml(),
+                        mimeType, page_encoding, null);
+            }
+
             memory.setVisibility(View.VISIBLE);
             truthfulness.setVisibility(View.GONE);
+            isMem = false;
         } else {
             final AlertDialog.Builder builder = new AlertDialog.Builder(ReaderActivity.this);
-            builder.setTitle("Restart");
-            builder.setMessage("Would you learn all items one more time?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    temp.addAll(items);
-                    initRandomWord(temp);
-                }
+            builder.setTitle(R.string.restart);
+            builder.setMessage(R.string.restart_message);
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                temp.addAll(items);
+                initRandomWord(temp);
             });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
+            builder.setNegativeButton(R.string.no, (dialog, which) -> {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -261,7 +253,7 @@ public class ReaderActivity extends AppCompatActivity {
                         dialog.show();
                     }
                 } else {
-                    Toast.makeText(ReaderActivity.this, "Permission is Required for getting list of files", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReaderActivity.this, R.string.permission_message, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -270,15 +262,10 @@ public class ReaderActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit");
-        builder.setMessage("Exit from Reader?");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ReaderActivity.this.finish();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
+        builder.setTitle(R.string.exit);
+        builder.setMessage(R.string.exit_reader);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> ReaderActivity.this.finish());
+        builder.setNegativeButton(R.string.cancel, null);
         builder.create().show();
     }
 }

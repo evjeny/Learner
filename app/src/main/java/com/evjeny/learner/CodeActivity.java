@@ -50,18 +50,17 @@ public class CodeActivity extends AppCompatActivity {
         switch (id) {
             case R.id.menu_code_output:
                 final AlertDialog.Builder outputDialog = new AlertDialog.Builder(CodeActivity.this);
-                outputDialog.setTitle("Output");
+                outputDialog.setTitle(R.string.output);
                 outputDialog.setMessage(output);
-                outputDialog.setNegativeButton("Copy", (dialog, which) -> {
-                    // copy to clipboard
+                outputDialog.setNegativeButton(R.string.copy, (dialog, which) -> {
                 });
                 outputDialog.create().show();
                 break;
             case R.id.menu_code_debug:
                 final AlertDialog.Builder debugDialog = new AlertDialog.Builder(CodeActivity.this);
-                debugDialog.setTitle("Debug");
+                debugDialog.setTitle(R.string.debug);
                 debugDialog.setMessage(debug);
-                debugDialog.setNegativeButton("Copy", (dialog, which) -> {
+                debugDialog.setNegativeButton(R.string.copy, (dialog, which) -> {
                     // copy to clipboard
                 });
                 debugDialog.create().show();

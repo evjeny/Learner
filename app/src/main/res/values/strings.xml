@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Learner</string>
+    <string name="app_name" translatable="false">Learner</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,7 +14,59 @@
         <item>0</item>
         <item>1</item>
     </integer-array>
-    <string name="pref_file_prefix">learner_</string>
-    <string name="pref_mimeType">text/html</string>
-    <string name="pref_encoding">UTF-8</string>
+    <string name="pref_file_prefix" translatable="false">learner_</string>
+    <string name="pref_mimeType" translatable="false">text/html</string>
+    <string name="pref_encoding" translatable="false">UTF-8</string>
+    <string name="output">Output</string>
+    <string name="debug">Debug</string>
+    <string name="import_">Import</string>
+    <string name="switch_mode">Switch mode</string>
+    <string name="count_items">Count items</string>
+    <string name="clear_items">Clear items</string>
+    <string name="run_code">Run code</string>
+    <string name="export">Export</string>
+    <string name="code_hint">Code here!</string>
+    <string name="path_to_file">Path to file</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="html" translatable="false">HTML</string>
+    <string name="writer" translatable="false">Writer</string>
+    <string name="reader" translatable="false">Reader</string>
+    <string name="forward">Forward</string>
+    <string name="right">Right</string>
+    <string name="wrong">Wrong</string>
+    <string name="add">Add</string>
+    <string name="item_title">Item title</string>
+    <string name="exit">Exit</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="copy">Copy</string>
+    <string name="choose_files">Choose files</string>
+    <string name="all">All</string>
+    <string name="left">Left</string>
+    <string name="clear">Clear</string>
+    <string name="restart">Restart</string>
+    <string name="restart_message">Would you learn all items one more time?</string>
+    <string name="no">No</string>
+    <string name="permission_message">Permission is Required for getting list of files</string>
+    <string name="choose_dir">Choose directory to save</string>
+    <string name="file">File</string>
+    <string name="saved_to_sd">saved to SD!</string>
+    <string name="delete">Delete</string>
+    <string name="edit_item">Edit item</string>
+    <string name="exit_writer">Exit from Writer?</string>
+    <string name="exit_app">Exit from app?</string>
+    <string name="exit_reader">Exit from Reader?</string>
+    <string name="save_prefix_summary">Set prefix of the saved files</string>
+    <string name="save_prefix_title">Prefix of the files</string>
+    <string name="save_encoding_summary">Set encoding of the saved files</string>
+    <string name="save_encoding_title">Encoding of the files</string>
+    <string name="read_learn_content_title">Learn content</string>
+    <string name="read_learn_content_summary">Learn information from content-field</string>
+    <string name="read_encoding_summary">Set encoding of the saved files</string>
+    <string name="read_encoding_title">Encoding of the files</string>
+    <string name="read_mime_type_summary">Set mine type for browser</string>
+    <string name="read_mime_type_title">MimeType of the page</string>
+    <string name="read_browser_encoding_summary">Set encoding for browser</string>
+    <string name="read_browser_encoding_title">Encoding of the page</string>
 </resources>

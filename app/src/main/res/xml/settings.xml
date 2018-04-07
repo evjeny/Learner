@@ -5,34 +5,34 @@
         <EditTextPreference
             android:defaultValue="@string/pref_file_prefix"
             android:key="default_prefix"
-            android:summary="Set prefix of the saved files"
-            android:title="Prefix of the files" />
+            android:summary="@string/save_prefix_summary"
+            android:title="@string/save_prefix_title" />
         <EditTextPreference
             android:defaultValue="@string/pref_encoding"
             android:key="save_encoding"
-            android:summary="Set encoding of the saved files"
-            android:title="Encoding of the files" />
+            android:summary="@string/save_encoding_summary"
+            android:title="@string/save_encoding_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Reader">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_learn_content"
-            android:summary="Learn information from content-field"
-            android:title="Learn content" />
+            android:summary="@string/read_learn_content_summary"
+            android:title="@string/read_learn_content_title" />
         <EditTextPreference
             android:defaultValue="@string/pref_encoding"
             android:key="read_encoding"
-            android:summary="Set encoding of the saved files"
-            android:title="Encoding of the files" />
+            android:summary="@string/read_encoding_summary"
+            android:title="@string/read_encoding_title" />
         <EditTextPreference
             android:defaultValue="@string/pref_mimeType"
             android:key="mimeType"
-            android:summary="Set mine type for browser"
-            android:title="MimeType of the page" />
+            android:summary="@string/read_mime_type_summary"
+            android:title="@string/read_mime_type_title" />
         <EditTextPreference
             android:defaultValue="@string/pref_encoding"
             android:key="encoding"
-            android:summary="Set encoding for browser"
-            android:title="Encoding of the page" />
+            android:summary="@string/read_browser_encoding_summary"
+            android:title="@string/read_browser_encoding_title" />
     </PreferenceCategory>
 </PreferenceScreen>

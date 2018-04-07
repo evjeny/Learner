@@ -1,6 +1,5 @@
 package com.evjeny.learner;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -30,15 +29,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Exit");
-        builder.setMessage("Exit from app?");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MainActivity.this.finish();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
+        builder.setTitle(R.string.exit);
+        builder.setMessage(R.string.exit_app);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> MainActivity.this.finish());
+        builder.setNegativeButton(R.string.cancel, null);
         builder.create().show();
     }
 
